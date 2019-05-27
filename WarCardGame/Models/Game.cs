@@ -27,7 +27,7 @@ namespace WarCardGame.Models
         private void playGame()
         {
             var isGameOver = false;
-            while (isGameOver)
+            while (!isGameOver)
             {
                 var doContinue = consoleMenu();
                 if (!doContinue) return;
