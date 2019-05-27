@@ -37,7 +37,7 @@ namespace WarCardGame.Models
 
         public void AddCards(IList<Card> cards)
         {
-            foreach(var card in cards)
+            foreach(var card in cards.Where(x=>x !=null))
             {
                 _hand.Enqueue(card);
             }

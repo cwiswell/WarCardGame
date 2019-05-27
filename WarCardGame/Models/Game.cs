@@ -42,6 +42,7 @@ namespace WarCardGame.Models
 
         private void playHand()
         {
+            Console.WriteLine(new string('-', 50));
             var numOfPlayers = players.Count();
             var cardPot = new Card[numOfPlayers];
 
@@ -52,7 +53,8 @@ namespace WarCardGame.Models
             {
                 if (!players[index].ActivePlayer)
                 {
-                    Console.Write($"NPC {index} already out of game");
+                    Console.WriteLine($"NPC {index} already out of game");
+                    cardPot[index] = null;
                     continue;
                 }
                 cardPot[index] = players[index].DrawCard();
@@ -60,35 +62,101 @@ namespace WarCardGame.Models
                 Console.WriteLine($"NPC {index} drew: {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}");
             }
 
-            var maxCard = cardPot.Max(x => x.Value);
+            var maxCard = cardPot.Where(x=>x != null).Max(x => x.Value);
 
-            if (cardPot.Count(x => x.Value == maxCard) > 1)
+            if (cardPot.Count(x => x?.Value == maxCard) > 1)
             {
+                goToWar(maxCard, cardPot);
                // war();
             }
             else
             {
                 determineWinner(maxCard, cardPot);
             }
-            Console.WriteLine();
+            Console.WriteLine(new string('-', 50));
         }
 
-        private void war(List<int> playersInWar, List<Card> cardPot = null)
+        private void goToWar(CardValueEnum maxCardValue, Card[] cardPot)
         {
-            if(cardPot == null)
+            var listOfWarPlayers = new List<int>();
+            for(var index = 0; index < cardPot.Length; index++)
             {
-                cardPot = new List<Card>();
+                if(cardPot[index]?.Value == maxCardValue)
+                {
+                    listOfWarPlayers.Add(index);
+                }
             }
-            Console.WriteLine("WAR!");
+            war(listOfWarPlayers, cardPot.Where(x => x != null).ToList());
+        }
 
+        private void war(List<int> playersInWar, List<Card> cardPot)
+        {
+            Console.WriteLine();
+            Console.WriteLine("** WAR! **");
+            var warCardPot = new Dictionary<int, Card>();
 
+            foreach(var warPlayer in playersInWar.ToList())
+            {
+                var player = players[warPlayer];
+                if(player.GetHandCount() < 2)
+                {
+                    while(player.AnyCardsLeft())
+                    {
+                        cardPot.Add(player.DrawCard());
+                    }
+                    playersInWar.Remove(warPlayer);
+                    if(warPlayer == 0)
+                    {
+                        Console.WriteLine("You do not have enough cards to go to war and lose the conflict.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"NPC {warPlayer} does not have enough cards to go to war and lose the conflict.");
+                    }
+                }
+                else
+                {
+                    cardPot.Add(player.DrawCard());
+                    var drawnCard = player.DrawCard();
+                    warCardPot.Add(warPlayer, drawnCard);
+                    if (warPlayer != 0)
+                    {
+                        Console.WriteLine($"NPC {warPlayer} drew: {drawnCard.Value.ToString()} of {drawnCard.Type.ToString()}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"You drew: {drawnCard.Value.ToString()} of {drawnCard.Type.ToString()}");
+                    }
+                }
+            }
+            Console.WriteLine();
+            var maxCard = warCardPot.Max(x => x.Value?.Value);
+
+            cardPot.AddRange(warCardPot.Select(x => x.Value));
+
+            if (warCardPot.Count(x=>x.Value?.Value == maxCard)== 1)
+            {
+                var winner = warCardPot.First(x => x.Value?.Value == maxCard);
+                var winnerIndex = winner.Key;
+                var winnerCard = winner.Value;
+
+                var playerName = winnerIndex == 0 ? "You have" : $"NPC {winnerIndex} has";
+                Console.WriteLine($"{playerName} won the War with {winnerCard.Value.ToString()} of {winnerCard.Type.ToString()}.");
+                players[winnerIndex].AddCards(cardPot);
+            }
+            else
+            {
+                var playersStillInWar = warCardPot.Where(x => x.Value?.Value == maxCard).Select(x => x.Key).ToList();
+                war(playersStillInWar,cardPot);
+            }
         }
 
         private void determineWinner(CardValueEnum maxValue, Card[] cardPot)
         {
+            Console.WriteLine();
             for (var index = 0; index < cardPot.Length; index++)
             {
-                if (cardPot[index].Value == maxValue)
+                if (cardPot[index]?.Value == maxValue)
                 {
                     var playerName = index == 0 ? "You have" : $"NPC {index} has";
                     Console.WriteLine($"{playerName} won with {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}.");
