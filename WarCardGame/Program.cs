@@ -9,7 +9,6 @@ namespace WarCardGame
     {
         static void Main(string[] args)
         {
-
             var numberOfPlayers = getNumberOfPlayers();
 
             var deckOfCards = new CardDeck();
@@ -17,6 +16,39 @@ namespace WarCardGame
 
             var players = initializePlayers(numberOfPlayers).ToArray();
 
+            setUpPlayers(players, deckOfCards, numberOfPlayers);
+
+            playGame(players, deckOfCards);
+
+            Console.ReadKey();
+        }
+        
+        private static void playGame(Player[] players, CardDeck deckOfCards)
+        {
+            while (true)
+            {
+                var isGameOver = checkForWinner(players);
+                if (isGameOver) return;
+
+
+            }
+        }
+
+        private static bool checkForWinner(Player[] players)
+        {
+            if (players.Any(x => !x.AnyCardsLeft()))
+            {
+                var winners = players.Where(x => !x.AnyCardsLeft());
+                foreach (var winner in winners)
+                {
+
+                }
+            }
+            return false;
+        }
+
+        private static void setUpPlayers(Player[] players, CardDeck deckOfCards, int numberOfPlayers)
+        {
             var playerNumber = 0;
             var drawnCard = deckOfCards.DrawCard();
             while (drawnCard != null)
@@ -30,10 +62,8 @@ namespace WarCardGame
                     playerNumber = 0;
                 }
             }
-
-            Console.ReadKey();
         }
-        
+
         private static IEnumerable<Player> initializePlayers(int numberOfPlayers)
         {
             var players = new Player[numberOfPlayers];
