@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -49,6 +50,11 @@ namespace WarCardGame.Models
 
             for (var index = 1; index < numOfPlayers; index++)
             {
+                if (!players[index].ActivePlayer)
+                {
+                    Console.Write($"NPC {index} already out of game");
+                    continue;
+                }
                 cardPot[index] = players[index].DrawCard();
 
                 Console.WriteLine($"NPC {index} drew: {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}");
@@ -58,7 +64,7 @@ namespace WarCardGame.Models
 
             if (cardPot.Count(x => x.Value == maxCard) > 1)
             {
-                war();
+               // war();
             }
             else
             {
@@ -67,9 +73,15 @@ namespace WarCardGame.Models
             Console.WriteLine();
         }
 
-        private void war()
+        private void war(List<int> playersInWar, List<Card> cardPot = null)
         {
+            if(cardPot == null)
+            {
+                cardPot = new List<Card>();
+            }
             Console.WriteLine("WAR!");
+
+
         }
 
         private void determineWinner(CardValueEnum maxValue, Card[] cardPot)
@@ -140,9 +152,41 @@ namespace WarCardGame.Models
 
         private bool determineIsGameOver()
         {
-            return players.Count(x => x.ActivePlayer) == 1;
+            if (!players[0].ActivePlayer)
+            {
+                Console.WriteLine("You have lost the game. Better luck next time.");
+                return true;
+            }
+
+            if(players.Count(x => x.ActivePlayer) == 1)
+            {
+                displayWinnerText();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }       
         }
 
+        private void displayWinnerText()
+        {
+            for(var index = 0; index < players.Count(); index++)
+            {
+                if (!players[index].ActivePlayer) continue;
+
+                if (index != 0)
+                {
+                    Console.WriteLine($"NPC {index} has won the Game. Better luck next time.");
+                }
+                else
+                {
+                    Console.WriteLine("You have won the Game. Congratulations!");
+                }
+            }
+        }
+        
         private void setUpPlayers(CardDeck deckOfCards, int numberOfPlayers)
         {
             var playerNumber = 0;
