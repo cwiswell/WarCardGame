@@ -7,22 +7,24 @@ namespace WarCardGame.Models
     internal class Player
     {
         private Queue<Card> _hand = new Queue<Card>();
-        internal int WintTotal { get; private set; }
-        
+        internal bool ActivePlayer { get; private set; }
+
+        public Player()
+        {
+            ActivePlayer = true;
+        }
+
         public bool AnyCardsLeft()
         {
             return _hand.Any();
         }
 
-        public bool CheckIfWinner()
+        public void CheckIfStillActive()
         {
-            var isWinner = !_hand.Any();
-            if (isWinner)
+            if(ActivePlayer == true && !_hand.Any())
             {
-                WintTotal++;
+                ActivePlayer = false;
             }
-
-            return isWinner;
         }
 
         public Card DrawCard()

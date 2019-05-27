@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -27,15 +26,16 @@ namespace WarCardGame.Models
 
         private void playGame()
         {
-            while (true)
+            var isGameOver = false;
+            while (isGameOver)
             {
                 var doContinue = consoleMenu();
                 if (!doContinue) return;
 
                 playHand();
 
-                var isGameOver = checkForWinner();
-                if (isGameOver) return;
+                checkForLosers();
+                isGameOver = determineIsGameOver();
             }
         }
 
@@ -74,7 +74,6 @@ namespace WarCardGame.Models
 
         private void determineWinner(CardValueEnum maxValue, Card[] cardPot)
         {
-
             for (var index = 0; index < cardPot.Length; index++)
             {
                 if (cardPot[index].Value == maxValue)
@@ -131,36 +130,17 @@ namespace WarCardGame.Models
             return stringBuilder.ToString();
         }
 
-        private bool checkForWinner()
+        private void checkForLosers()
         {
-            var listOfWinners = new List<int>();
-
-            for (var index = 0; index < players.Count(); index++)
+            foreach(var player in players.Where(x=> x.ActivePlayer))
             {
-                if (players[index].CheckIfWinner())
-                {
-                    listOfWinners.Add(index);
-                }
+                player.CheckIfStillActive();
             }
-            var numberOfWinners = listOfWinners.Count();
+        }
 
-            if (numberOfWinners == 0)
-            {
-                return false;
-            }
-
-            var containsPlayer = listOfWinners.Contains(0);
-
-            if (numberOfWinners == 1 && containsPlayer)
-            {
-                Console.WriteLine("You have won!");
-            }
-            else if (containsPlayer)
-            {
-                Console.WriteLine($"You have tied with Computer player {String.Join(", ", listOfWinners.Where(x => x != 0).ToArray())}");
-            }
-
-            return true;
+        private bool determineIsGameOver()
+        {
+            return players.Count(x => x.ActivePlayer) == 1;
         }
 
         private void setUpPlayers(CardDeck deckOfCards, int numberOfPlayers)
