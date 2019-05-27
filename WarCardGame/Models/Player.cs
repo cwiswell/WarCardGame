@@ -6,7 +6,7 @@ namespace WarCardGame.Models
 {
     internal class Player
     {
-        private List<Card> _hand = new List<Card>();
+        private Queue<Card> _hand = new Queue<Card>();
         internal int WintTotal { get; private set; }
         
         public bool AnyCardsLeft()
@@ -27,24 +27,23 @@ namespace WarCardGame.Models
 
         public Card DrawCard()
         {
-            var drawnCard = _hand.FirstOrDefault();
-
-            if (drawnCard != null)
-            {
-                _hand.Remove(drawnCard);
-            }
+            if (!_hand.Any()) return null;
+            var drawnCard = _hand.Dequeue();
 
             return drawnCard;
         }
 
         public void AddCards(IList<Card> cards)
         {
-            _hand.AddRange(cards);
+            foreach(var card in cards)
+            {
+                _hand.Enqueue(card);
+            }
         }
 
         public void AddCard(Card card)
         {
-            _hand.Add(card);
+            _hand.Enqueue(card);
         }
 
         public int GetHandCount()

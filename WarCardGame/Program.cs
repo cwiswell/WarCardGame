@@ -19,23 +19,80 @@ namespace WarCardGame
 
             setUpPlayers(players, deckOfCards, numberOfPlayers);
 
-            playGame(players, deckOfCards);
+            playGame(players);
 
             Console.ReadKey();
         }
         
-        private static void playGame(Player[] players, CardDeck deckOfCards)
+        private static void playGame(Player[] players)
         {
             while (true)
             {
                 var doContinue = consoleMenu(players);
                 if (!doContinue) return;
 
-
+                playHand(players);
 
                 var isGameOver = checkForWinner(players);
                 if (isGameOver) return;
             }
+        }
+
+        private static void playHand(Player[] players)
+        {
+            var numOfPlayers = players.Count();
+            var cardPot = new Card[numOfPlayers];
+
+            cardPot[0] = players[0].DrawCard();
+            Console.WriteLine($"You Drew: {cardPot[0].Value.ToString()} of {cardPot[0].Type.ToString()}");
+
+            for (var index = 1; index < numOfPlayers; index++)
+            {
+                cardPot[index] = players[index].DrawCard();
+
+                Console.WriteLine($"NPC {index} drew: {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}");
+            }
+
+            var maxCard = cardPot.Max(x => x.Value);            
+
+            if(cardPot.Count(x=> x.Value == maxCard) > 1)
+            {
+                war();
+            }
+            else
+            {
+                determineWinner(maxCard, cardPot, players);
+            }
+        }
+
+        private static void war()
+        {
+
+        }
+
+        private static void determineWinner(CardValueEnum maxValue, Card[] cardPot, Player[] players)
+        {
+            var loserList = new List<int>();
+
+            for(var index = 0; index < cardPot.Length; index++)
+            {
+                if(cardPot[index].Value == maxValue)
+                {
+                    var playerName = index == 0 ? "You" : $"NPC {index}";
+                    Console.WriteLine($"{playerName} has won with {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}.");
+                }
+                else
+                {
+                    loserList.Add(index);
+                }
+            }
+
+            distributePotToLosers(players, loserList, cardPot);
+        }
+
+        private static void distributePotToLosers(Player[] players, List<int> losers, Card[] cardPot)
+        {
+
         }
 
         private static bool consoleMenu(Player[] players)
