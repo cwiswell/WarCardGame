@@ -74,37 +74,16 @@ namespace WarCardGame.Models
 
         private void determineWinner(CardValueEnum maxValue, Card[] cardPot)
         {
-            var loserList = new List<int>();
 
             for (var index = 0; index < cardPot.Length; index++)
             {
                 if (cardPot[index].Value == maxValue)
                 {
-                    var playerName = index == 0 ? "You" : $"NPC {index}";
-                    Console.WriteLine($"{playerName} has won with {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}.");
+                    var playerName = index == 0 ? "You have" : $"NPC {index} has";
+                    Console.WriteLine($"{playerName} won with {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}.");
+                    players[index].AddCards(cardPot);
+                    return;
                 }
-                else
-                {
-                    loserList.Add(index);
-                }
-            }
-
-            distributePotToLosers( loserList, cardPot);
-        }
-
-        private void distributePotToLosers(List<int> losers, Card[] cardPot)
-        {
-            var loser = losers.FirstOrDefault();
-            foreach (var card in cardPot)
-            {
-                players[loser].AddCard(card);
-
-                var nextLoserIndex = losers.IndexOf(loser) + 1;
-                if (nextLoserIndex == losers.Count())
-                {
-                    nextLoserIndex = 0;
-                }
-                loser = losers[nextLoserIndex];
             }
         }
 

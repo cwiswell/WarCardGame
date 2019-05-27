@@ -27,7 +27,7 @@ namespace WarCardGame.Models
 
         public Card DrawCard()
         {
-            if (!_hand.Any()) return null;
+            if(!_hand.Any()) return null;
             var drawnCard = _hand.Dequeue();
 
             return drawnCard;

@@ -18,6 +18,7 @@ namespace WarCardGame
         private static void askUserToPlay()
         {
             Console.WriteLine("Would you like to play War? ");
+            ConsoleYesNoText();
             userInputSwitch();
             
             while (true)
