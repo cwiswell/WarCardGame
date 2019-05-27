@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using WarCardGame.Models;
 
 namespace WarCardGame
@@ -27,24 +28,89 @@ namespace WarCardGame
         {
             while (true)
             {
+                var doContinue = consoleMenu(players);
+                if (!doContinue) return;
+
+
+
                 var isGameOver = checkForWinner(players);
                 if (isGameOver) return;
-
-
             }
+        }
+
+        private static bool consoleMenu(Player[] players)
+        {
+            while (true)
+            {
+                Console.WriteLine("[q] - quit    [c] - continue   [s] - scores ");
+                var userEntry = Console.ReadLine();
+                switch (userEntry)
+                {
+                    case "q":
+                    case "Q":
+                        Console.WriteLine("Quitting game");
+                        return false;
+                    case "s":
+                    case "S":
+                        Console.WriteLine(getPlayersCurrentDeckString(players));
+                        break;
+                    case "c":
+                    case "C":
+                        return true;
+                    default:
+                        Console.WriteLine($"{userEntry} is not a valid entry");
+                        break;
+                }
+            }
+        }
+
+        private static string getPlayersCurrentDeckString(Player[] players)
+        {
+            var stringBuilder = new StringBuilder();
+            for(var index = 0; index < players.Count(); index++)
+            {
+                if(index != 0)
+                {
+                    stringBuilder.AppendLine($"NPC {index} - {players[index].GetHandCount()}");
+                }
+                else
+                {
+                    stringBuilder.AppendLine($"You - {players[index].GetHandCount()}");
+                }
+            }
+
+            return stringBuilder.ToString();
         }
 
         private static bool checkForWinner(Player[] players)
         {
-            if (players.Any(x => !x.AnyCardsLeft()))
-            {
-                var winners = players.Where(x => !x.AnyCardsLeft());
-                foreach (var winner in winners)
-                {
+            var listOfWinners = new List<int>();
 
+            for(var index = 0; index < players.Count(); index++)
+            {
+                if (players[index].CheckIfWinner())
+                {
+                    listOfWinners.Add(index);
                 }
             }
-            return false;
+            var numberOfWinners = listOfWinners.Count();
+
+            if(numberOfWinners == 0)
+            {
+                return false;
+            }
+
+            var containsPlayer = listOfWinners.Contains(0);
+
+            if(numberOfWinners == 1 && containsPlayer)
+            {
+                Console.WriteLine("You have won!");
+            }else if (containsPlayer)
+            {
+                Console.WriteLine($"You have tied with Computer player {String.Join(", ", listOfWinners.Where(x=> x!= 0).ToArray())}");
+            }
+
+            return true;
         }
 
         private static void setUpPlayers(Player[] players, CardDeck deckOfCards, int numberOfPlayers)

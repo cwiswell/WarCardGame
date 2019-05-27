@@ -7,10 +7,22 @@ namespace WarCardGame.Models
     internal class Player
     {
         private List<Card> _hand = new List<Card>();
+        internal int WintTotal { get; private set; }
         
         public bool AnyCardsLeft()
         {
             return _hand.Any();
+        }
+
+        public bool CheckIfWinner()
+        {
+            var isWinner = !_hand.Any();
+            if (isWinner)
+            {
+                WintTotal++;
+            }
+
+            return isWinner;
         }
 
         public Card DrawCard()
@@ -33,6 +45,11 @@ namespace WarCardGame.Models
         public void AddCard(Card card)
         {
             _hand.Add(card);
+        }
+
+        public int GetHandCount()
+        {
+            return _hand.Count();
         }
     }
 }
