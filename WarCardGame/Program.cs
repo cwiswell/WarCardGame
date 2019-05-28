@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using WarCardGame.Models;
 
 namespace WarCardGame
@@ -19,17 +16,16 @@ namespace WarCardGame
         {
             Console.WriteLine("Would you like to play War? ");
             ConsoleYesNoText();
-            userInputSwitch();
-            
-            while (true)
+            var continuePlaying = userInputSwitch();
+            while (continuePlaying)
             {
                 Console.WriteLine("Would you like to play Again? ");
                 ConsoleYesNoText();
-                userInputSwitch();
+                continuePlaying = userInputSwitch();
             }
         }
 
-        private static void userInputSwitch()
+        private static bool userInputSwitch()
         {
             var userInput = Console.ReadLine();
             switch (userInput)
@@ -40,15 +36,14 @@ namespace WarCardGame
                     Console.WriteLine();
                     var game = new Game();
                     game.StartGame();
-                    break;
+                    return true;
                 case "n":
                 case "N":
-                    break;
+                    return false;
                 default:
                     Console.WriteLine($"{userInput} is not a valid answer");
                     Console.WriteLine("Try Again");
-                    userInputSwitch();
-                    break;
+                    return userInputSwitch();
             }
         }
 
