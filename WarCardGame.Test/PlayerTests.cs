@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WarCardGame.Models;
 using Xunit;
 
@@ -50,6 +51,22 @@ namespace WarCardGame.Test
             player.AddCard(cardToAdd);
 
             Assert.True(player.GetHandCount() == 1);
+        }
+
+        [Fact]
+        public void AddCardListToPlayerHand()
+        {
+            var player = new Player();
+
+            var cardList = new List<Card>
+            {
+                new Card(CardSuiteEnum.Clubs, CardValueEnum.Ace),
+                new Card(CardSuiteEnum.Clubs, CardValueEnum.Two)
+            };
+
+            player.AddCards(cardList);
+
+            Assert.True(player.GetHandCount() == 2);
         }
     }
 }
