@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("WarCardGame.Test")]
 namespace WarCardGame.Models
 {
+
     internal class Player
     {
         private Queue<Card> _hand = new Queue<Card>();
-        internal bool ActivePlayer { get; private set; }
+        public bool ActivePlayer { get; private set; }
 
         public Player()
         {

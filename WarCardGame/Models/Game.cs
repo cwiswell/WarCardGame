@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WarCardGame.Models
 {
-    internal class Game
+    public class Game
     {
         private Player[] players;
 

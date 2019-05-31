@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarCardGame", "WarCardGame\WarCardGame.csproj", "{A738B220-637D-4E05-B935-F429D7AA088B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WarCardGame", "WarCardGame\WarCardGame.csproj", "{A738B220-637D-4E05-B935-F429D7AA088B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarCardGame.Test", "WarCardGame.Test\WarCardGame.Test.csproj", "{1481D586-5463-4E3B-9259-3B3E28485A51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A738B220-637D-4E05-B935-F429D7AA088B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A738B220-637D-4E05-B935-F429D7AA088B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A738B220-637D-4E05-B935-F429D7AA088B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1481D586-5463-4E3B-9259-3B3E28485A51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1481D586-5463-4E3B-9259-3B3E28485A51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1481D586-5463-4E3B-9259-3B3E28485A51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1481D586-5463-4E3B-9259-3B3E28485A51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

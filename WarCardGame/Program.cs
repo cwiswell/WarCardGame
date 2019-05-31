@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using WarCardGame.Models;
 
+[assembly: InternalsVisibleTo("WarCardGame.Test")]
 namespace WarCardGame
 {
     class Program
