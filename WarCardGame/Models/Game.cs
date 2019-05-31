@@ -62,9 +62,9 @@ namespace WarCardGame.Models
                 Console.WriteLine($"NPC {index} drew: {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}");
             }
 
-            var maxCard = cardPot.Where(x=>x != null).Max(x => x.Value);
+            var maxCard = cardPot.Where(x=>x != null).Max(x => x);
 
-            if (cardPot.Count(x => x?.Value == maxCard) > 1)
+            if (cardPot.Count(x => x == maxCard) > 1)
             {
                 goToWar(maxCard, cardPot);
                // war();
@@ -76,12 +76,12 @@ namespace WarCardGame.Models
             Console.WriteLine(new string('-', 50));
         }
 
-        private void goToWar(CardValueEnum maxCardValue, Card[] cardPot)
+        private void goToWar(Card maxCard, Card[] cardPot)
         {
             var listOfWarPlayers = new List<int>();
             for(var index = 0; index < cardPot.Length; index++)
             {
-                if(cardPot[index]?.Value == maxCardValue)
+                if(cardPot[index] == maxCard)
                 {
                     listOfWarPlayers.Add(index);
                 }
@@ -151,12 +151,12 @@ namespace WarCardGame.Models
             }
         }
 
-        private void determineWinner(CardValueEnum maxValue, Card[] cardPot)
+        private void determineWinner(Card maxCard, Card[] cardPot)
         {
             Console.WriteLine();
             for (var index = 0; index < cardPot.Length; index++)
             {
-                if (cardPot[index]?.Value == maxValue)
+                if (cardPot[index] == maxCard)
                 {
                     var playerName = index == 0 ? "You have" : $"NPC {index} has";
                     Console.WriteLine($"{playerName} won with {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}.");
