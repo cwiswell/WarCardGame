@@ -9,7 +9,7 @@ namespace WarCardGame.Test
         [Fact]
         public void NewPlayerIsActive()
         {
-            var player = new Player();
+            var player = new Player(true,1);
 
             Assert.True(player.ActivePlayer);
         }
@@ -17,7 +17,7 @@ namespace WarCardGame.Test
         [Fact]
         public void NewPlayerHasEmptyHand()
         {
-            var player = new Player();
+            var player = new Player(true, 1);
 
             Assert.False(player.AnyCardsLeft());
         }
@@ -25,7 +25,7 @@ namespace WarCardGame.Test
         [Fact]
         public void NewPlayerIsInactiveAfterCheck()
         {
-            var player = new Player();
+            var player = new Player(true, 1);
 
             player.CheckIfStillActive();
 
@@ -35,7 +35,7 @@ namespace WarCardGame.Test
         [Fact]
         public void DrawCardFromEmptyHand()
         {
-            var player = new Player();
+            var player = new Player(true, 1);
 
             var drawnCard = player.DrawCard();
 
@@ -45,7 +45,7 @@ namespace WarCardGame.Test
         [Fact]
         public void AddCardToPlayerHand()
         {
-            var player = new Player();
+            var player = new Player(true, 1);
 
             var cardToAdd = new Card(CardSuiteEnum.Clubs, CardValueEnum.Ace);
             player.AddCard(cardToAdd);
@@ -56,7 +56,7 @@ namespace WarCardGame.Test
         [Fact]
         public void AddCardListToPlayerHand()
         {
-            var player = new Player();
+            var player = new Player(true, 0);
 
             var cardList = new List<Card>
             {

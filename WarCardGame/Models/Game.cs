@@ -47,19 +47,10 @@ namespace WarCardGame.Models
             var cardPot = new Card[numOfPlayers];
 
             cardPot[0] = players[0].DrawCard();
-            Console.WriteLine($"You Drew: {cardPot[0].ToString()}");
 
             for (var index = 1; index < numOfPlayers; index++)
             {
-                if (!players[index].ActivePlayer)
-                {
-                    Console.WriteLine($"NPC {index} already out of game");
-                    cardPot[index] = null;
-                    continue;
-                }
                 cardPot[index] = players[index].DrawCard();
-
-                Console.WriteLine($"NPC {index} drew: {cardPot[index].ToString()}");
             }
 
             var maxCard = cardPot.Where(x=>x != null).Max(x => x);
@@ -279,11 +270,11 @@ namespace WarCardGame.Models
         private void initializePlayers(int numberOfPlayers)
         {
             players = new Player[numberOfPlayers];
-            players[0] = new Player(false);
+            players[0] = new Player(false, 0);
 
             for (var index = 1; index < numberOfPlayers; index++)
             {                
-                players[index] = new Player();
+                players[index] = new Player(true, index);
             }
         }
 

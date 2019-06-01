@@ -12,16 +12,13 @@ namespace WarCardGame.Models
         private Queue<Card> _hand = new Queue<Card>();
         public bool ActivePlayer { get; private set; }
         private bool isNpc { get; }
+        private int playerNumber { get; }
 
-        public Player()
-        {
-            ActivePlayer = true;
-            isNpc = false;
-        }
-        public Player(bool isNpc)
+        public Player(bool isNpc, int playerNumber)
         {
             ActivePlayer = true;
             this.isNpc = isNpc;
+            this.playerNumber = playerNumber;
         }
 
         public bool AnyCardsLeft()
@@ -31,7 +28,7 @@ namespace WarCardGame.Models
 
         public void CheckIfStillActive()
         {
-            if(ActivePlayer == true && !_hand.Any())
+            if (ActivePlayer == true && !_hand.Any())
             {
                 ActivePlayer = false;
             }
@@ -39,15 +36,28 @@ namespace WarCardGame.Models
 
         public Card DrawCard()
         {
-            if(!_hand.Any()) return null;
+            if (!this.ActivePlayer || !_hand.Any())
+            {
+                Console.WriteLine($"NPC {playerNumber} already out of game");
+                return null;
+            }
             var drawnCard = _hand.Dequeue();
+
+            if (!this.isNpc)
+            {
+                Console.WriteLine($"You Drew: {drawnCard.ToString()}");
+            }
+            else
+            {
+                Console.WriteLine($"NPC {playerNumber} drew: {drawnCard.ToString()}");
+            }
 
             return drawnCard;
         }
 
         public void AddCards(IList<Card> cards)
         {
-            foreach(var card in cards.Where(x=>x !=null))
+            foreach (var card in cards.Where(x => x != null))
             {
                 _hand.Enqueue(card);
             }
