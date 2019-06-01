@@ -42,7 +42,7 @@ namespace WarCardGame.Models
 
         private void playHand()
         {
-            Console.WriteLine(new string('-', 50));
+            printBoundary();
             var numOfPlayers = players.Count();
             var cardPot = new Card[numOfPlayers];
 
@@ -72,6 +72,11 @@ namespace WarCardGame.Models
             {
                 determineWinner(maxCard, cardPot);
             }
+            printBoundary();
+        }
+
+        private void printBoundary()
+        {
             Console.WriteLine(new string('-', 50));
         }
 
@@ -274,9 +279,10 @@ namespace WarCardGame.Models
         private void initializePlayers(int numberOfPlayers)
         {
             players = new Player[numberOfPlayers];
+            players[0] = new Player(false);
 
-            for (var index = 0; index < numberOfPlayers; index++)
-            {
+            for (var index = 1; index < numberOfPlayers; index++)
+            {                
                 players[index] = new Player();
             }
         }

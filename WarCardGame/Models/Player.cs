@@ -11,10 +11,17 @@ namespace WarCardGame.Models
     {
         private Queue<Card> _hand = new Queue<Card>();
         public bool ActivePlayer { get; private set; }
+        private bool isNpc { get; }
 
         public Player()
         {
             ActivePlayer = true;
+            isNpc = false;
+        }
+        public Player(bool isNpc)
+        {
+            ActivePlayer = true;
+            this.isNpc = isNpc;
         }
 
         public bool AnyCardsLeft()
