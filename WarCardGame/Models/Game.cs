@@ -47,7 +47,7 @@ namespace WarCardGame.Models
             var cardPot = new Card[numOfPlayers];
 
             cardPot[0] = players[0].DrawCard();
-            Console.WriteLine($"You Drew: {cardPot[0].Value.ToString()} of {cardPot[0].Type.ToString()}");
+            Console.WriteLine($"You Drew: {cardPot[0].ToString()}");
 
             for (var index = 1; index < numOfPlayers; index++)
             {
@@ -59,7 +59,7 @@ namespace WarCardGame.Models
                 }
                 cardPot[index] = players[index].DrawCard();
 
-                Console.WriteLine($"NPC {index} drew: {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}");
+                Console.WriteLine($"NPC {index} drew: {cardPot[index].ToString()}");
             }
 
             var maxCard = cardPot.Where(x=>x != null).Max(x => x);
@@ -67,7 +67,6 @@ namespace WarCardGame.Models
             if (cardPot.Count(x => x == maxCard) > 1)
             {
                 goToWar(maxCard, cardPot);
-               // war();
             }
             else
             {
@@ -121,32 +120,32 @@ namespace WarCardGame.Models
                     warCardPot.Add(warPlayer, drawnCard);
                     if (warPlayer != 0)
                     {
-                        Console.WriteLine($"NPC {warPlayer} drew: {drawnCard.Value.ToString()} of {drawnCard.Type.ToString()}");
+                        Console.WriteLine($"NPC {warPlayer} drew: {drawnCard.ToString()}");
                     }
                     else
                     {
-                        Console.WriteLine($"You drew: {drawnCard.Value.ToString()} of {drawnCard.Type.ToString()}");
+                        Console.WriteLine($"You drew: {drawnCard.ToString()}");
                     }
                 }
             }
             Console.WriteLine();
-            var maxCard = warCardPot.Max(x => x.Value?.Value);
+            var maxCard = warCardPot.Max(x => x.Value);
 
             cardPot.AddRange(warCardPot.Select(x => x.Value));
 
-            if (warCardPot.Count(x=>x.Value?.Value == maxCard)== 1)
+            if (warCardPot.Count(x=>x.Value == maxCard)== 1)
             {
-                var winner = warCardPot.First(x => x.Value?.Value == maxCard);
+                var winner = warCardPot.First(x => x.Value == maxCard);
                 var winnerIndex = winner.Key;
                 var winnerCard = winner.Value;
 
                 var playerName = winnerIndex == 0 ? "You have" : $"NPC {winnerIndex} has";
-                Console.WriteLine($"{playerName} won the War with {winnerCard.Value.ToString()} of {winnerCard.Type.ToString()}.");
+                Console.WriteLine($"{playerName} won the War with {winnerCard.ToString()}");
                 players[winnerIndex].AddCards(cardPot);
             }
             else
             {
-                var playersStillInWar = warCardPot.Where(x => x.Value?.Value == maxCard).Select(x => x.Key).ToList();
+                var playersStillInWar = warCardPot.Where(x => x.Value == maxCard).Select(x => x.Key).ToList();
                 war(playersStillInWar,cardPot);
             }
         }
@@ -159,7 +158,7 @@ namespace WarCardGame.Models
                 if (cardPot[index] == maxCard)
                 {
                     var playerName = index == 0 ? "You have" : $"NPC {index} has";
-                    Console.WriteLine($"{playerName} won with {cardPot[index].Value.ToString()} of {cardPot[index].Type.ToString()}.");
+                    Console.WriteLine($"{playerName} won with {cardPot[index].ToString()}");
                     players[index].AddCards(cardPot);
                     return;
                 }
