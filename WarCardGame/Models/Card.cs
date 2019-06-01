@@ -49,5 +49,10 @@ namespace WarCardGame.Models
         {
             return HashCode.Combine(Type, Value);
         }
+
+        public override string ToString()
+        {
+            return $"{Value} of {Type}";
+        }
     }
 }
