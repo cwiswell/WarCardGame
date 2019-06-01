@@ -55,6 +55,15 @@ namespace WarCardGame.Models
             return drawnCard;
         }
 
+        public Card DrawHiddenCard()
+        {
+            if (!this.ActivePlayer || !_hand.Any()) return null;
+
+            var drawnCard = _hand.Dequeue();
+
+            return drawnCard;
+        }
+
         public void AddCards(IList<Card> cards)
         {
             foreach (var card in cards.Where(x => x != null))

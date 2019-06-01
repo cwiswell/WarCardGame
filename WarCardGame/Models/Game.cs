@@ -97,7 +97,7 @@ namespace WarCardGame.Models
                 {
                     while(player.AnyCardsLeft())
                     {
-                        cardPot.Add(player.DrawCard());
+                        cardPot.Add(player.DrawHiddenCard());
                     }
                     playersInWar.Remove(warPlayer);
                     if(warPlayer == 0)
@@ -111,17 +111,9 @@ namespace WarCardGame.Models
                 }
                 else
                 {
-                    cardPot.Add(player.DrawCard());
+                    cardPot.Add(player.DrawHiddenCard());
                     var drawnCard = player.DrawCard();
                     warCardPot.Add(warPlayer, drawnCard);
-                    if (warPlayer != 0)
-                    {
-                        Console.WriteLine($"NPC {warPlayer} drew: {drawnCard.ToString()}");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"You drew: {drawnCard.ToString()}");
-                    }
                 }
             }
             Console.WriteLine();
