@@ -42,5 +42,23 @@ namespace WarCardGame.Test
 
             Assert.False(newCard1.Equals(newCard2));
         }
+
+        [Fact]
+        public void TwoCardsValuesAreNotEqual()
+        {
+            var newCard1 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
+            var newCard2 = new Card(CardSuiteEnum.Heart, CardValueEnum.Two);
+
+            Assert.False(newCard1.Equals(newCard2));
+        }
+
+        [Fact]
+        public void TwoCardsValuesAndSuitesAreNotEqual()
+        {
+            var newCard1 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
+            var newCard2 = new Card(CardSuiteEnum.Diamond, CardValueEnum.Two);
+
+            Assert.False(newCard1.Equals(newCard2));
+        }
     }
 }
