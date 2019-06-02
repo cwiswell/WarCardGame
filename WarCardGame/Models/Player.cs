@@ -81,5 +81,17 @@ namespace WarCardGame.Models
         {
             return _hand.Count();
         }
+
+        public string GetScore()
+        {
+            if (isNpc)
+            {
+                return $"NPC {playerNumber} - {GetHandCount()}";
+            }
+            else
+            {
+                return $"You - {GetHandCount()}";
+            }
+        }
     }
 }

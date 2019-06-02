@@ -184,14 +184,7 @@ namespace WarCardGame.Models
             var stringBuilder = new StringBuilder();
             for (var index = 0; index < players.Count(); index++)
             {
-                if (index != 0)
-                {
-                    stringBuilder.AppendLine($"NPC {index} - {players[index].GetHandCount()}");
-                }
-                else
-                {
-                    stringBuilder.AppendLine($"You - {players[index].GetHandCount()}");
-                }
+                stringBuilder.AppendLine(players[index].GetScore());
             }
 
             return stringBuilder.ToString();
