@@ -6,16 +6,6 @@ namespace WarCardGame.Test
     public class CardTests
     {
         [Fact]
-        public void EmptyCardToString()
-        {
-            var newCard = new Card();
-
-            var cardString = newCard.ToString();
-
-            Assert.True(cardString == "Two of Spade");
-        }
-
-        [Fact]
         public void CardToString()
         {
             var newCard = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);

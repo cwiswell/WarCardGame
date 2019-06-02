@@ -4,8 +4,6 @@ namespace WarCardGame.Models
 {
     internal class Card : IComparable
     {
-        public Card() { }
-
         public Card(CardSuiteEnum suite, CardValueEnum value)
         {
             Type = suite;
