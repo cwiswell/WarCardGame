@@ -51,6 +51,27 @@ namespace WarCardGame.Test
             Assert.Null(drawnCard);
         }
 
+
+        [Fact]
+        public void DrawCardFromHand()
+        {
+            var player = new Player(true, 1, mockConsoleWrapper.Object);
+
+            var cardList = new List<Card>
+            {
+                new Card(CardSuiteEnum.Clubs, CardValueEnum.Two),
+                new Card(CardSuiteEnum.Diamond, CardValueEnum.Ace)
+            };
+
+            player.AddCards(cardList);
+
+            var drawnCard = player.DrawCard();
+
+            Assert.True(drawnCard.Type == CardSuiteEnum.Clubs && drawnCard.Value == CardValueEnum.Two);
+
+            mockConsoleWrapper.Verify(x => x.WriteLine("NPC 1 drew: Two of Clubs"), Times.Once);
+        }
+
         [Fact]
         public void AddCardToPlayerHand()
         {
