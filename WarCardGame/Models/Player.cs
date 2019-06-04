@@ -25,7 +25,7 @@ namespace WarCardGame.Models
             ActivePlayer = true;
             this.isNpc = isNpc;
             this.playerNumber = playerNumber;
-            _hand = new Queue<Card>()
+            _hand = new Queue<Card>();
         }
 
         public bool AnyCardsLeft()
