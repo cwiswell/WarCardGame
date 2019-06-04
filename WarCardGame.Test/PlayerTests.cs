@@ -51,7 +51,6 @@ namespace WarCardGame.Test
             Assert.Null(drawnCard);
         }
 
-
         [Fact]
         public void DrawCardFromHand()
         {

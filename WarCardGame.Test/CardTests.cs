@@ -41,11 +41,15 @@ namespace WarCardGame.Test
             Assert.False(newCard1.Equals(newCard2));
         }
 
-        [Fact]
-        public void TwoCardsValuesAreNotEqual()
+        [Theory]
+        [InlineData(CardSuiteEnum.Heart, CardValueEnum.Queen, CardSuiteEnum.Heart, CardValueEnum.King)]
+        [InlineData(CardSuiteEnum.Diamond, CardValueEnum.Ace, CardSuiteEnum.Diamond, CardValueEnum.Nine)]
+        [InlineData(CardSuiteEnum.Spade, CardValueEnum.Two, CardSuiteEnum.Spade, CardValueEnum.Ace)]
+        [InlineData(CardSuiteEnum.Heart, CardValueEnum.Jack, CardSuiteEnum.Heart, CardValueEnum.Ten)]
+        internal void TwoCardsValuesAreNotEqual(CardSuiteEnum suite1, CardValueEnum value1, CardSuiteEnum suite2, CardValueEnum value2)
         {
-            var newCard1 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
-            var newCard2 = new Card(CardSuiteEnum.Heart, CardValueEnum.Two);
+            var newCard1 = new Card(suite1, value1);
+            var newCard2 = new Card(suite2, value2);
 
             Assert.False(newCard1.Equals(newCard2));
         }
