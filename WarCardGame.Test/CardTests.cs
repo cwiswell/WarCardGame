@@ -15,11 +15,15 @@ namespace WarCardGame.Test
             Assert.True(cardString == "Queen of Heart");
         }
 
-        [Fact]
-        public void TwoCardsAreEqual()
+        [Theory]
+        [InlineData(CardSuiteEnum.Heart, CardValueEnum.Queen, CardSuiteEnum.Heart, CardValueEnum.Queen)]
+        [InlineData(CardSuiteEnum.Diamond, CardValueEnum.Ace, CardSuiteEnum.Diamond, CardValueEnum.Ace)]
+        [InlineData(CardSuiteEnum.Spade, CardValueEnum.Two, CardSuiteEnum.Spade, CardValueEnum.Two)]
+        [InlineData(CardSuiteEnum.Clubs, CardValueEnum.Jack, CardSuiteEnum.Clubs, CardValueEnum.Jack)]
+        internal void TwoCardsAreEqual(CardSuiteEnum suite1, CardValueEnum value1, CardSuiteEnum suite2, CardValueEnum value2)
         {
-            var newCard1 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
-            var newCard2 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
+            var newCard1 = new Card(suite1, value1);
+            var newCard2 = new Card(suite2, value2);
 
             Assert.True(newCard1.Equals(newCard2));
         }
