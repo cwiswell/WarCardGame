@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using WarCardGame.Infrastructure;
 
 namespace WarCardGame.Models
 {
-    public class Game
+    public class GameService : IGameService
     {
         private Player[] players;
+        private readonly IConsoleWrapper _consoleWrapper;
 
-        public Game()
+        public GameService(IConsoleWrapper consoleWrapper)
         {
+            _consoleWrapper = consoleWrapper;
             var numberOfPlayers = getNumberOfPlayers();
             var deckOfCards = new CardDeck();
             deckOfCards.ShuffleDeck();
@@ -68,7 +71,7 @@ namespace WarCardGame.Models
 
         private void printBoundary()
         {
-            Console.WriteLine(new string('-', 50));
+            _consoleWrapper.WriteLine(new string('-', 50));
         }
 
         private void goToWar(Card maxCard, Card[] cardPot)
@@ -86,8 +89,8 @@ namespace WarCardGame.Models
 
         private void war(List<int> playersInWar, List<Card> cardPot)
         {
-            Console.WriteLine();
-            Console.WriteLine("** WAR! **");
+            _consoleWrapper.WriteLine();
+            _consoleWrapper.WriteLine("** WAR! **");
             var warCardPot = new Dictionary<int, Card>();
 
             foreach(var warPlayer in playersInWar.ToList())
@@ -102,11 +105,11 @@ namespace WarCardGame.Models
                     playersInWar.Remove(warPlayer);
                     if(warPlayer == 0)
                     {
-                        Console.WriteLine("You do not have enough cards to go to war and lose the conflict.");
+                        _consoleWrapper.WriteLine("You do not have enough cards to go to war and lose the conflict.");
                     }
                     else
                     {
-                        Console.WriteLine($"NPC {warPlayer} does not have enough cards to go to war and lose the conflict.");
+                        _consoleWrapper.WriteLine($"NPC {warPlayer} does not have enough cards to go to war and lose the conflict.");
                     }
                 }
                 else
@@ -116,7 +119,7 @@ namespace WarCardGame.Models
                     warCardPot.Add(warPlayer, drawnCard);
                 }
             }
-            Console.WriteLine();
+            _consoleWrapper.WriteLine();
             var maxCard = warCardPot.Max(x => x.Value);
 
             cardPot.AddRange(warCardPot.Select(x => x.Value));
@@ -128,7 +131,7 @@ namespace WarCardGame.Models
                 var winnerCard = winner.Value;
 
                 var playerName = winnerIndex == 0 ? "You have" : $"NPC {winnerIndex} has";
-                Console.WriteLine($"{playerName} won the War with {winnerCard.ToString()}");
+                _consoleWrapper.WriteLine($"{playerName} won the War with {winnerCard.ToString()}");
                 players[winnerIndex].AddCards(cardPot);
             }
             else
@@ -140,13 +143,13 @@ namespace WarCardGame.Models
 
         private void determineWinner(Card maxCard, Card[] cardPot)
         {
-            Console.WriteLine();
+            _consoleWrapper.WriteLine();
             for (var index = 0; index < cardPot.Length; index++)
             {
                 if (cardPot[index] == maxCard)
                 {
                     var playerName = index == 0 ? "You have" : $"NPC {index} has";
-                    Console.WriteLine($"{playerName} won with {cardPot[index].ToString()}");
+                    _consoleWrapper.WriteLine($"{playerName} won with {cardPot[index].ToString()}");
                     players[index].AddCards(cardPot);
                     return;
                 }
@@ -157,23 +160,23 @@ namespace WarCardGame.Models
         {
             while (true)
             {
-                Console.WriteLine("[q] - quit    [c] - continue   [s] - scores ");
-                var userEntry = Console.ReadLine();
+                _consoleWrapper.WriteLine("[q] - quit    [c] - continue   [s] - scores ");
+                var userEntry = _consoleWrapper.ReadLine();
                 switch (userEntry)
                 {
                     case "q":
                     case "Q":
-                        Console.WriteLine("Quitting game");
+                        _consoleWrapper.WriteLine("Quitting game");
                         return false;
                     case "s":
                     case "S":
-                        Console.WriteLine(getPlayersCurrentDeckString());
+                        _consoleWrapper.WriteLine(getPlayersCurrentDeckString());
                         break;
                     case "c":
                     case "C":
                         return true;
                     default:
-                        Console.WriteLine($"{userEntry} is not a valid entry");
+                        _consoleWrapper.WriteLine($"{userEntry} is not a valid entry");
                         break;
                 }
             }
@@ -202,7 +205,7 @@ namespace WarCardGame.Models
         {
             if (!players[0].ActivePlayer)
             {
-                Console.WriteLine("You have lost the game. Better luck next time.");
+                _consoleWrapper.WriteLine("You have lost the game. Better luck next time.");
                 return true;
             }
 
@@ -226,11 +229,11 @@ namespace WarCardGame.Models
 
                 if (index != 0)
                 {
-                    Console.WriteLine($"NPC {index} has won the Game. Better luck next time.");
+                    _consoleWrapper.WriteLine($"NPC {index} has won the Game. Better luck next time.");
                 }
                 else
                 {
-                    Console.WriteLine("You have won the Game. Congratulations!");
+                    _consoleWrapper.WriteLine("You have won the Game. Congratulations!");
                 }
             }
         }
@@ -268,15 +271,15 @@ namespace WarCardGame.Models
             var npcs = 0;
             while (npcs < 1)
             {
-                Console.WriteLine("How many players?");
+                _consoleWrapper.WriteLine("How many players?");
 
-                var userInput = Console.ReadLine();
+                var userInput = _consoleWrapper.ReadLine();
 
                 int.TryParse(userInput, out npcs);
 
                 if (npcs < 1)
                 {
-                    Console.WriteLine("Must have atleast 2 player to play.");
+                    _consoleWrapper.WriteLine("Must have atleast 2 player to play.");
                 }
             }
             return npcs;

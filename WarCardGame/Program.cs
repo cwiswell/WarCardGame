@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Runtime.CompilerServices;
+using WarCardGame.Infrastructure;
 using WarCardGame.Models;
 
 [assembly: InternalsVisibleTo("WarCardGame.Test")]
@@ -7,13 +9,27 @@ namespace WarCardGame
 {
     class Program
     {
+        private static IServiceProvider serviceProvider;
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to War Card Game");
+            
+            //Configure DI
+            var serviceCollection = new ServiceCollection(); ;
+            ConfigureProviders(serviceCollection);
+
+            serviceProvider = serviceCollection.BuildServiceProvider();
 
             askUserToPlay();
         }
-        
+                
+        private static void ConfigureProviders(IServiceCollection services)
+        {
+            //add providers to service collection
+            services.AddSingleton<IConsoleWrapper, ConsoleWrapper>()
+                .AddTransient<IGameService, GameService>();
+        }
+
         private static void askUserToPlay()
         {
             Console.WriteLine("Would you like to play War? ");
@@ -36,7 +52,7 @@ namespace WarCardGame
                 case "Y":
                     Console.WriteLine("Good Luck!");
                     Console.WriteLine();
-                    var game = new Game();
+                    var game = serviceProvider.GetService<IGameService>();
                     game.StartGame();
                     return true;
                 case "n":
