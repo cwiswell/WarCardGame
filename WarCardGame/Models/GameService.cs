@@ -258,11 +258,11 @@ namespace WarCardGame.Models
         private void initializePlayers(int numberOfPlayers)
         {
             players = new Player[numberOfPlayers];
-            players[0] = new Player(false, 0);
+            players[0] = new Player(false, 0, _consoleWrapper);
 
             for (var index = 1; index < numberOfPlayers; index++)
             {                
-                players[index] = new Player(true, index);
+                players[index] = new Player(true, index, _consoleWrapper);
             }
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using WarCardGame.Infrastructure;
 
 [assembly: InternalsVisibleTo("WarCardGame.Test")]
 namespace WarCardGame.Models
@@ -9,16 +10,22 @@ namespace WarCardGame.Models
 
     internal class Player
     {
-        private Queue<Card> _hand = new Queue<Card>();
         public bool ActivePlayer { get; private set; }
+
+        private readonly IConsoleWrapper _consoleWrapper;
+        private readonly Queue<Card> _hand;
+
         private bool isNpc { get; }
         private int playerNumber { get; }
 
-        public Player(bool isNpc, int playerNumber)
+        public Player(bool isNpc, int playerNumber, IConsoleWrapper consoleWrapper)
         {
+            _consoleWrapper = consoleWrapper;
+
             ActivePlayer = true;
             this.isNpc = isNpc;
             this.playerNumber = playerNumber;
+            _hand = new Queue<Card>()
         }
 
         public bool AnyCardsLeft()
@@ -36,20 +43,20 @@ namespace WarCardGame.Models
 
         public Card DrawCard()
         {
-            if (!this.ActivePlayer || !_hand.Any())
+            if (!ActivePlayer || !_hand.Any())
             {
-                Console.WriteLine($"NPC {playerNumber} already out of game");
+                _consoleWrapper.WriteLine($"NPC {playerNumber} already out of game");
                 return null;
             }
             var drawnCard = _hand.Dequeue();
 
-            if (!this.isNpc)
+            if (!isNpc)
             {
-                Console.WriteLine($"You Drew: {drawnCard.ToString()}");
+                _consoleWrapper.WriteLine($"You Drew: {drawnCard.ToString()}");
             }
             else
             {
-                Console.WriteLine($"NPC {playerNumber} drew: {drawnCard.ToString()}");
+                _consoleWrapper.WriteLine($"NPC {playerNumber} drew: {drawnCard.ToString()}");
             }
 
             return drawnCard;
