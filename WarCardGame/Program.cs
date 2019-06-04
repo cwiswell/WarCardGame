@@ -27,13 +27,15 @@ namespace WarCardGame
         {
             //add providers to service collection
             services.AddSingleton<IConsoleWrapper, ConsoleWrapper>()
-                .AddTransient<IGameService, GameService>();
+                .AddTransient<IGameService, GameService>()
+                .AddTransient<ICardDeck, CardDeck>();
         }
 
         private static void askUserToPlay()
         {
             Console.WriteLine("Would you like to play War? ");
             ConsoleYesNoText();
+
             var continuePlaying = userInputSwitch();
             while (continuePlaying)
             {

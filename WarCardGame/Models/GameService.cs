@@ -6,21 +6,20 @@ using WarCardGame.Infrastructure;
 
 namespace WarCardGame.Models
 {
-    public class GameService : IGameService
+    internal class GameService : IGameService
     {
         private Player[] players;
         private readonly IConsoleWrapper _consoleWrapper;
 
-        public GameService(IConsoleWrapper consoleWrapper)
+        public GameService(IConsoleWrapper consoleWrapper, ICardDeck cardDeck)
         {
             _consoleWrapper = consoleWrapper;
             var numberOfPlayers = getNumberOfPlayers();
-            var deckOfCards = new CardDeck();
-            deckOfCards.ShuffleDeck();
+            cardDeck.ShuffleDeck();
 
             initializePlayers(numberOfPlayers);
 
-            setUpPlayers(deckOfCards, numberOfPlayers);
+            setUpPlayers(cardDeck, numberOfPlayers);
 
         }
         public void StartGame()
@@ -47,7 +46,7 @@ namespace WarCardGame.Models
         {
             printBoundary();
             var numOfPlayers = players.Count();
-            var cardPot = new Card[numOfPlayers];
+            var cardPot = new ICard[numOfPlayers];
 
             cardPot[0] = players[0].DrawCard();
 
@@ -74,7 +73,7 @@ namespace WarCardGame.Models
             _consoleWrapper.WriteLine(new string('-', 50));
         }
 
-        private void goToWar(Card maxCard, Card[] cardPot)
+        private void goToWar(ICard maxCard, ICard[] cardPot)
         {
             var listOfWarPlayers = new List<int>();
             for(var index = 0; index < cardPot.Length; index++)
@@ -87,11 +86,11 @@ namespace WarCardGame.Models
             war(listOfWarPlayers, cardPot.Where(x => x != null).ToList());
         }
 
-        private void war(List<int> playersInWar, List<Card> cardPot)
+        private void war(List<int> playersInWar, List<ICard> cardPot)
         {
             _consoleWrapper.WriteLine();
             _consoleWrapper.WriteLine("** WAR! **");
-            var warCardPot = new Dictionary<int, Card>();
+            var warCardPot = new Dictionary<int, ICard>();
 
             foreach(var warPlayer in playersInWar.ToList())
             {
@@ -141,7 +140,7 @@ namespace WarCardGame.Models
             }
         }
 
-        private void determineWinner(Card maxCard, Card[] cardPot)
+        private void determineWinner(ICard maxCard, ICard[] cardPot)
         {
             _consoleWrapper.WriteLine();
             for (var index = 0; index < cardPot.Length; index++)
@@ -238,7 +237,7 @@ namespace WarCardGame.Models
             }
         }
         
-        private void setUpPlayers(CardDeck deckOfCards, int numberOfPlayers)
+        private void setUpPlayers(ICardDeck deckOfCards, int numberOfPlayers)
         {
             var playerNumber = 0;
             var drawnCard = deckOfCards.DrawCard();

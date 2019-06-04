@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using WarCardGame.Infrastructure;
@@ -13,7 +12,7 @@ namespace WarCardGame.Models
         public bool ActivePlayer { get; private set; }
 
         private readonly IConsoleWrapper _consoleWrapper;
-        private readonly Queue<Card> _hand;
+        private readonly Queue<ICard> _hand;
 
         private bool isNpc { get; }
         private int playerNumber { get; }
@@ -25,7 +24,7 @@ namespace WarCardGame.Models
             ActivePlayer = true;
             this.isNpc = isNpc;
             this.playerNumber = playerNumber;
-            _hand = new Queue<Card>();
+            _hand = new Queue<ICard>();
         }
 
         public bool AnyCardsLeft()
@@ -41,7 +40,7 @@ namespace WarCardGame.Models
             }
         }
 
-        public Card DrawCard()
+        public ICard DrawCard()
         {
             if (!ActivePlayer || !_hand.Any())
             {
@@ -62,7 +61,7 @@ namespace WarCardGame.Models
             return drawnCard;
         }
 
-        public Card DrawHiddenCard()
+        public ICard DrawHiddenCard()
         {
             if (!this.ActivePlayer || !_hand.Any()) return null;
 
@@ -71,7 +70,7 @@ namespace WarCardGame.Models
             return drawnCard;
         }
 
-        public void AddCards(IList<Card> cards)
+        public void AddCards(IList<ICard> cards)
         {
             foreach (var card in cards.Where(x => x != null))
             {
@@ -79,7 +78,7 @@ namespace WarCardGame.Models
             }
         }
 
-        public void AddCard(Card card)
+        public void AddCard(ICard card)
         {
             _hand.Enqueue(card);
         }

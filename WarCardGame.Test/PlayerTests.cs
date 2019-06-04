@@ -57,7 +57,7 @@ namespace WarCardGame.Test
         {
             var player = new Player(true, 1, mockConsoleWrapper.Object);
 
-            var cardList = new List<Card>
+            var cardList = new List<ICard>
             {
                 new Card(CardSuiteEnum.Clubs, CardValueEnum.Two),
                 new Card(CardSuiteEnum.Diamond, CardValueEnum.Ace)
@@ -88,7 +88,7 @@ namespace WarCardGame.Test
         {
             var player = new Player(true, 0, mockConsoleWrapper.Object);
 
-            var cardList = new List<Card>
+            var cardList = new List<ICard>
             {
                 new Card(CardSuiteEnum.Clubs, CardValueEnum.Ace),
                 new Card(CardSuiteEnum.Clubs, CardValueEnum.Two)

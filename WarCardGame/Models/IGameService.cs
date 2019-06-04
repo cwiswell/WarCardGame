@@ -1,7 +1,7 @@
 ﻿
 namespace WarCardGame.Models
 {
-    interface IGameService
+    internal interface IGameService
     {
         void StartGame();
     }

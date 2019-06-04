@@ -5,12 +5,13 @@ using WarCardGame.Infrastructure;
 
 namespace WarCardGame.Models
 {
-    internal class CardDeck
+    internal class CardDeck: ICardDeck
     {
-        private IList<Card> _cards = new List<Card>();
+        private readonly IList<ICard> _cards;
 
         public CardDeck()
         {
+            _cards = new List<ICard>();
             foreach (var suite in (CardSuiteEnum[])Enum.GetValues(typeof(CardSuiteEnum)))
             {
                 foreach (var cardValue in (CardValueEnum[])Enum.GetValues(typeof(CardValueEnum)))
@@ -30,7 +31,7 @@ namespace WarCardGame.Models
             return _cards.Any();
         }
 
-        public Card DrawCard()
+        public ICard DrawCard()
         {
             var drawnCard = _cards.FirstOrDefault();
 

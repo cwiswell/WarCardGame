@@ -2,7 +2,7 @@
 
 namespace WarCardGame.Models
 {
-    internal class Card : IComparable
+    internal class Card : IComparable, ICard
     {
         public Card(CardSuiteEnum suite, CardValueEnum value)
         {
