@@ -71,11 +71,19 @@ namespace WarCardGame.Test
             Assert.False(newCard1.Equals(newCard2));
         }
 
-        [Fact]
-        public void TwoCardsEqualOperator()
+        [Theory]
+        [InlineData(CardSuiteEnum.Heart, CardValueEnum.Queen, CardSuiteEnum.Heart, CardValueEnum.Queen)]
+        [InlineData(CardSuiteEnum.Diamond, CardValueEnum.Ace, CardSuiteEnum.Diamond, CardValueEnum.Ace)]
+        [InlineData(CardSuiteEnum.Spade, CardValueEnum.Two, CardSuiteEnum.Spade, CardValueEnum.Two)]
+        [InlineData(CardSuiteEnum.Clubs, CardValueEnum.Jack, CardSuiteEnum.Clubs, CardValueEnum.Jack)]
+        [InlineData(CardSuiteEnum.Heart, CardValueEnum.Two, CardSuiteEnum.Heart, CardValueEnum.Two)]
+        [InlineData(CardSuiteEnum.Diamond, CardValueEnum.Five, CardSuiteEnum.Diamond, CardValueEnum.Five)]
+        [InlineData(CardSuiteEnum.Spade, CardValueEnum.Seven, CardSuiteEnum.Spade, CardValueEnum.Seven)]
+        [InlineData(CardSuiteEnum.Clubs, CardValueEnum.Nine, CardSuiteEnum.Clubs, CardValueEnum.Nine)]
+        internal void TwoCardsEqualOperator(CardSuiteEnum suite1, CardValueEnum value1, CardSuiteEnum suite2, CardValueEnum value2)
         {
-            var newCard1 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
-            var newCard2 = new Card(CardSuiteEnum.Heart, CardValueEnum.Queen);
+            var newCard1 = new Card(suite1, value1);
+            var newCard2 = new Card(suite2, value2);
 
             Assert.True(newCard1 == newCard2);
         }
